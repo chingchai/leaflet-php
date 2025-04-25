@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: php-web
+    ports:
+      - "8080:80"     # เปิดเว็บที่ http://localhost:8080
+    volumes:
+      - ./src:/var/www/html   # hot‑reload: แก้ไฟล์บนเครื่องแล้วรีเฟรชเว็บได้ทันที
+    restart: unless-stopped

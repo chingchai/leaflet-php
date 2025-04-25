@@ -1,0 +1,43 @@
+<html>
+<!--
+ * Name: Leafletjs connect php-geojson through postgis spatial database   
+ * Purpose: GIST@NU (www.cgistln.nu.ac.th)
+ * Date: 2016/10/13
+ * Author: Chingchai Humhong (chingchaih@nu.ac.th)
+ * Acknowledgement: 
+ !-->
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+<div id="map" style="width: 100%; height: 800px;"></div>
+<script type="text/javascript">
+var map = L.map('map');
+var OpenStreetMap_BlackAndWhite = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ maxZoom: 22,
+ attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+    
+OpenStreetMap_BlackAndWhite.addTo(map);
+map.setView([17.05, 100.25], 9);
+function addDataToMap(data, map) {
+    var dataLayer = L.geoJson(data, {
+        onEachFeature: function(feature, layer) {
+            var popupText = "school name: " + feature.properties.name
+                + "<br>school address: " + feature.properties.address;
+                //+ "<br><a href='" + feature.properties.url + "'>More info</a>";
+            layer.bindPopup(popupText); }
+        });
+    dataLayer.addTo(map);
+}
+$.getJSON("healthcenter.php", function(data) { addDataToMap(data,map); });
+</script>
+</body>
+</html>
